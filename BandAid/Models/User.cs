@@ -24,7 +24,10 @@ namespace BandAid.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Ime je obavezno")]
         public string Name { get; set; }
 
-        
+        [Display(Name = "Kontakt broj")]
+        public string PhoneNumber { get; set; }
+
+
         public string Adress { get; set; }
 
         [Required(AllowEmptyStrings = false)]

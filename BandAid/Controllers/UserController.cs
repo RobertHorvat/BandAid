@@ -15,7 +15,7 @@ namespace BandAid.Controllers
         masterContext _database = new masterContext();
         List<UserRole> _roles = new List<UserRole>();
 
-        
+
         //Registration 
         [HttpGet]
         public IActionResult Registration()
@@ -52,11 +52,12 @@ namespace BandAid.Controllers
                 }
                 else
                     user.UserId = _database.User.Last().UserId + 1;
-                
-                
+
+
                 user.IsEmailVerified = false;
 
                 _database.User.Add(user);
+                //Obavezno
                 _database.SaveChanges();
 
 
@@ -76,15 +77,15 @@ namespace BandAid.Controllers
         [NonAction]
         public bool EmailExist(string email)
         {
-            
-                var exists = _database.User.Where(a => a.Email == email).FirstOrDefault();
-                return exists != null;
-            
+
+            var exists = _database.User.Where(a => a.Email == email).FirstOrDefault();
+            return exists != null;
+
         }
         //Verify Email
-       
+        //TODO
         //Verify Email Link
-
+        //TODO
         //Login
         [HttpGet]
         public IActionResult Login()
@@ -93,6 +94,7 @@ namespace BandAid.Controllers
         }
 
         //Login POST action
+        //TODO
 
         //Logout
     }
