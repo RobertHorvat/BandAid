@@ -5,6 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BandAid.Models;
+using BandAid.Models.PomocneKlase;
+using MailKit;
+using MailKit.Net.Smtp;
+using MimeKit;
 
 namespace BandAid.Controllers
 {
@@ -17,22 +21,80 @@ namespace BandAid.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+           
 
             return View();
         }
 
+        [HttpGet]
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            
 
-            return View();
+            return View(new ContactUser());
+        }
+
+        [HttpPost]
+        public IActionResult Contact([Bind("FirstName,LastName,Email,Subject,Message")]ContactUser contactUser)
+        {
+            string _message = "";
+            string _info = "INFO";
+            ContactUser user = contactUser;
+            if(!ModelState.IsValid)
+            {
+               
+                return View();
+            }
+            else
+            {
+                try
+                {
+                    SendMessage(user);
+                    _message = "Hvala na pitanju, pokušat ćemo odgovoriti u najkraćem mogućem roku!";
+                }
+                catch (Exception e)
+                {
+
+                    _message = e.Message;
+                }
+                ViewBag.Message = _message;
+                ViewBag.Info = _info;
+                return View();
+            }
+
+        }
+
+        [NonAction]
+        public void SendMessage(ContactUser user)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Question", "band.aid.info2019@gmail.com"));
+            message.To.Add(new MailboxAddress("BandAid", "band.aid.info2019@gmail.com"));
+            message.Subject = user.Subject;
+            message.Body = new TextPart("plain")
+            {
+                Text = user.Message + " " + user.Email + " " + user.FirstName + " " + user.LastName
+            };
+
+            using (var client = new SmtpClient())
+            {
+                client.Connect("smtp.gmail.com", 587, false);
+                client.Authenticate("band.aid.info2019@gmail.com", "bandaid_2019");
+                client.Send(message);
+                client.Disconnect(true);
+            }
+
+
+
+
         }
 
         public IActionResult Privacy()
         {
             return View();
         }
+
+       
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

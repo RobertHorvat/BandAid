@@ -7,78 +7,94 @@ using System.Threading.Tasks;
 using BandAid.Models;
 using BandAid.Models.PomocneKlase;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BandAid.Controllers
 {
     public class UserController : Controller
     {
-        masterContext _database = new masterContext();
-        List<UserRole> _roles = new List<UserRole>();
+        static masterContext _database = new masterContext();
+        List<UserRole> _roles = _database.UserRole
+            .Where(it => it.Name != "Admin")
+            .ToList();
 
 
         //Registration 
         [HttpGet]
         public IActionResult Registration()
         {
-            foreach (UserRole r in _database.UserRole.ToList())
-            {
-                _roles.Add(r);
-            }
-            ViewBag.Roles = _roles;
-            return View();
+            
+            ViewBag.Roles = new SelectList(_roles, "RoleId", "Name");
+            return View(new User());
         }
 
         //Registration POST action
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Registration(User user)
+        public IActionResult Registration([Bind("Name,Email,PassHash,RoleId")]User user)
         {
             bool _status = false;
             string _message = "";
-            if (ModelState.IsValid)
+            ViewBag.Roles = new SelectList(_roles, "RoleId", "Name");
+
+            User RegUser = user;
+            if(ModelState.IsValid)
             {
-                if (EmailExist(user.Email))
+                if(EmailExist(user.Email))
                 {
-                    ModelState.AddModelError("Email vec u upotrebi", "Ovaj Email se koristi,odaberite drugi");
-                    return View(user);
+                    ModelState.AddModelError("Email", "Email u upotrebi");
+                    return View();
                 }
 
-                user.ActivationCode = Guid.NewGuid();
-                user.PassHash = Enkripcija.Hash(user.PassHash);
-
-                if (_database.User.Last() == null)
+                try
                 {
-                    user.UserId = 1;
+                    UserRole _role = _database.UserRole.First(it => it.RoleId == user.RoleId);
+                    RegUser.ActivationCode = Guid.NewGuid();
+                    RegUser.PassHash = Enkripcija.Hash(user.PassHash);
+                    RegUser.Email = user.Email;
+
+
+                    RegUser.UserId = _database.User.Last().UserId + 1;
+
+                    RegUser.Role = _role;
+                    RegUser.RoleId = _role.RoleId;
+                    RegUser.Name = user.Name;
+
+
+
+                    RegUser.IsEmailVerified = false;
+
+                    _database.User.Add(RegUser);
+                    //Obavezno
+                    _database.SaveChanges();
+                    //TODO:send email method
+                    _message = "Uspješno ste se registrirali. Link za aktivaciju" +
+                        "Vam je poslan na Vašu email adresu: " + user.Email;
+                    _status = true;
+                    ViewBag.Message = _message;
+                    ViewBag.Status = _status;
+                    return RedirectToAction("Registration");
                 }
-                else
-                    user.UserId = _database.User.Last().UserId + 1;
+                catch (Exception)
+                {
 
-
-                user.IsEmailVerified = false;
-
-                _database.User.Add(user);
-                //Obavezno
-                _database.SaveChanges();
-
-
-                //TODO:send email method
-                _message = "Uspješno ste se registrirali. Link za aktivaciju" +
-                    "Vam je poslan na Vašu email adresu: " + user.Email;
-                _status = true;
+                    return RedirectToAction("Registration");
+                }
             }
             else
-                _message = "Invalid Request";
+            {
+                
+                return View();
+            }
+           
 
-            ViewBag.Message = _message;
-            ViewBag.Status = _status;
-            return View(user);
         }
 
         [NonAction]
         public bool EmailExist(string email)
         {
 
-            var exists = _database.User.Where(a => a.Email == email).FirstOrDefault();
+            var exists = _database.User.Where(it => it.Email == email).FirstOrDefault();
             return exists != null;
 
         }
