@@ -30,7 +30,7 @@ namespace BandAid.Models
 
         public string Adress { get; set; }
 
-        [Required(AllowEmptyStrings = false)]
+        [Required(AllowEmptyStrings = false,ErrorMessage ="Zaporka je obavezna")]
         [DataType(DataType.Password)]
         [MinLength(6, ErrorMessage = "Zaporka mora sadržavati minimalno 6 znakova")]
         public string PassHash { get; set; }

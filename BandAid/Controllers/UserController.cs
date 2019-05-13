@@ -106,10 +106,16 @@ namespace BandAid.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            return View(new User());
         }
 
         //Login POST action
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Login(User user)
+        {
+            return View();
+        }
         //TODO
 
         //Logout
