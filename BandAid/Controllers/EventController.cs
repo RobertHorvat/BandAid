@@ -16,10 +16,7 @@ namespace BandAid.Controllers
 		[HttpGet]
 		public IActionResult AllEvents(int userId)
 		{
-			foreach (Event e in _database.Event.Where(it => it.User.UserId == userId))
-			{
-				_events.Add(e);
-			}
+			_events = _database.Event.Where(x => x.User.UserId == userId).ToList();
 			ViewBag.Events = _events;
 			return View();
 		}
@@ -28,11 +25,7 @@ namespace BandAid.Controllers
 		public IActionResult EditEvent(int eventId)
 		{
 			Event _event = new Event();
-			foreach (Event e in _database.Event)
-			{
-				if (e.EventId == eventId)
-					_event = e;
-			}
+			_event = _database.Event.First(x => x.EventId == eventId);
 			return View(_event);
 		}
 
