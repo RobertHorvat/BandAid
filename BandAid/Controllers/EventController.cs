@@ -25,11 +25,7 @@ namespace BandAid.Controllers
 		public IActionResult EditEvent(int eventId)
 		{
 			Event _event = new Event();
-			foreach (Event e in _database.Event)
-			{
-				if (e.EventId == eventId)
-					_event = e;
-			}
+			_event = _database.Event.First(x => x.EventId == eventId);
 			return View(_event);
 		}
 

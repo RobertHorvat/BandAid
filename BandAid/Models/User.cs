@@ -45,9 +45,6 @@ namespace BandAid.Models
 
 		[Required(ErrorMessage = "Odaberite ulogu")]
 		public int RoleId { get; set; }
-		[Display(Name = "Kontakt broj")]
-		public string PhoneNumber { get; set; }
-
 		public bool IsEmailVerified { get; set; }
 		public Guid ActivationCode { get; set; }
 
