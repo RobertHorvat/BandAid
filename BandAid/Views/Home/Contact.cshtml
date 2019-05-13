@@ -1,304 +1,76 @@
-﻿<div class="site-blocks-cover overlay" style="background-image: url(/LandingPage/images/naslovna.jpg);" data-aos="fade" data-stellar-background-ratio="0.5" id="section-home">
-    <div class="container">
-        <div class="row align-items-center justify-content-center text-center">
-            <div class="col-md-8" data-aos="fade-up" data-aos-delay="400">
+﻿@model BandAid.Models.PomocneKlase.ContactUser
+<div class="container">
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-7 text-center border-primary">
+            <h2 class="font-weight-light text-primary">Kontaktiraj nas</h2>
+            <p class="color-black-opacity-5">Prati dnevne novosti &amp; Updateove</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-7 mb-5">
 
-                <h1 class="text-white font-weight-light text-uppercase font-weight-bold" data-aos="fade-up">Make your deal</h1>
-                <p class="mb-5" data-aos="fade-up" data-aos-delay="100">Musical Event Network</p>
-                <p data-aos="fade-up" data-aos-delay="200">
-                    <a asp-controller="User" asp-action="Login" class="btn btn-primary py-3 px-5 text-white">Prijava</a>
-                    <a asp-controller="User" asp-action="Registration" class="btn btn-outline-primary py-3 px-3 text-white">Registracija</a>
+            <form role="form" asp-action="Contact" asp-controller="Home" method="post" class="p-5 bg-white">
+
+                <div class="row form-group">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <label class="text-black" for="fname">Ime</label>
+                        <input type="text" name="FirstName" class="form-control">
+                        <span asp-validation-for="FirstName" class="alert-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="text-black" for="lname">Prezime</label>
+                        <input type="text" name="LastName" class="form-control">
+                        <span asp-validation-for="LastName" class="alert-danger"></span>
+                    </div>
+                </div>
+                <div class="row form-group">
+
+                    <div class="col-md-12">
+                        <label class="text-black" for="email">Email</label>
+                        <input type="email" name="Email" class="form-control">
+                        <span asp-validation-for="Email" class="alert-danger"></span>
+                    </div>
+                </div>
+                <div class="row form-group">
+
+                    <div class="col-md-12">
+                        <label class="text-black" for="subject">Tema</label>
+                        <input type="text" name="Subject" class="form-control">
+                        <span asp-validation-for="Subject" class="alert-danger"></span>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <label class="text-black" for="message">Poruka</label>
+                        <textarea name="Message" cols="30" rows="7" class="form-control"></textarea>
+                        <span asp-validation-for="Message" class="alert-danger"></span>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <input type="submit" value="Pošalji poruku" class="btn btn-primary py-2 px-4 text-white">
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div class="col-md-5">
+
+            <div class="p-4 mb-3 bg-white">
+                <p class="mb-0 font-weight-bold">Adresa</p>
+                <p class="mb-4">
+                    BANA JOSIPA JELAČIĆA 22a, 40 000 Čakovec
                 </p>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="site-section" id="section-about">
-    <div class="container">
-        <div class="row mb-5">
-
-            <div class="col-md-5 ml-auto mb-5 order-md-2" data-aos="fade-up" data-aos-delay="100">
-                <img src="~/LandingPage/images/eric-ward-250010-unsplash.jpg" alt="Image" class="img-fluid rounded">
-            </div>
-            <div class="col-md-6 order-md-1" data-aos="fade-up">
-                <div class="text-left pb-1 border-primary mb-4">
-                    <h2 class="text-primary">O Aplikaciji</h2>
-                </div>
-                <p>Ova aplikacija olakšava Vam pristup događajima u Vašoj blizini i možete se vrlo jednostavno pretplatiti na njih, ponuditi vašu uslugu ili pak ako vodite lokal, raspisati događaj i pronaći muzičare po vašoj mjeri.</p>
-                <p class="mb-5">Pratite svoje "evente",dodajte nove, odaberite izvođača i dajte im recenziju!</p>
-
-                <ul class="ul-check list-unstyled success">
-                    <li>Lagano rukovanje</li>
-                    <li>Praćenje promjena</li>
-                    <li>Lijep dizajn</li>
-                </ul>
+                <p class="mb-0 font-weight-bold">Telefon</p>
+                <p class="mb-4"><a href="#">+385 99 3791 050</a></p>
+                <p class="mb-0 font-weight-bold">Email Address</p>
+                <p class="mb-0"><a href="#">info@bandaid.com</a></p>
+                <p class="mb-0 font-weight-bold">@ViewBag.Info</p>
+                <p class="mb-0">@ViewBag.Message</p>
 
             </div>
 
-        </div>
-    </div>
-</div>
 
-<div class="site-section bg-image overlay" style="background-image: url(/LandingPage/images/hannah-rodrigo-14680-unsplash.jpg);" id="section-how-it-works">
-    <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-7 text-center border-primary">
-                <h2 class="font-weight-light text-primary" data-aos="fade">Organizatori/Izvođači</h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="100">
-                <div class="how-it-work-item">
-                    <span class="number">1</span>
-                    <div class="how-it-work-body">
-                        <h2>Dodajte događaj/Pregledajte događaje</h2>
-                        <p class="mb-5">Ukoliko ste se prijavili kao organizator, jednostavno stvorite novi događaj. Ukoliko ste se pak prijavili kao izvođač, razgledajte dostupne događaje.</p>
-                        <ul class="ul-check list-unstyled success">
-                            <li class="text-white">Jednostavno</li>
-                            <li class="text-white">Brzo</li>
-                            <li class="text-white">Efikasno</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
-                <div class="how-it-work-item">
-                    <span class="number">2</span>
-                    <div class="how-it-work-body">
-                        <h2>Uredi događaj/prijavi se na njega</h2>
-                        <p class="mb-5">Ukoliko se se prijavili kao organizator, popunite prazna polja kako biste specificirali događaj da bi se izvođači mogli na njega prijaviti.</p>
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="300">
-                <div class="how-it-work-item">
-                    <span class="number">3</span>
-                    <div class="how-it-work-body">
-                        <h2>Pratite status</h2>
-                        <p class="mb-5">Pratite status događaja i imajte nadzor nad izvođačima koji su se prijavili na vaš događaj. Kad pregledate profile od izvođača koji su se prijavili na vaš događaj, odaberite onoga koji Vam najviše odgovara i on dobiva obavijest da je izabran.</p>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="site-section border-bottom" id="section-our-team">
-    <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-7 text-center border-primary">
-                <h2 class="font-weight-light text-primary" data-aos="fade">Our Team</h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="100">
-                <div class="person">
-                    <img src="~/LandingPage/images/robi.png" alt="Image" class="img-fluid rounded mb-5 w-75 rounded-circle">
-                    <h3>Robert Horvat</h3>
-                    <p class="position text-muted">Vođa projekta</p>
-                    <p class="mb-4">2. godina stručnog studija računarstva,smjer programsko inženjerstvo, fullstack developer</p>
-                    <ul class="ul-social-circle">
-                        <li><a href="https://www.facebook.com/robert.horvat3"><span class="icon-facebook"></span></a></li>
-
-                        <li><a href="https://github.com/RobertHorvat"><span class="icon-github"></span></a></li>
-                        <li><a href="https://www.instagram.com/robert.h"><span class="icon-instagram"></span></a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
-                <div class="person">
-                    <img src="~/LandingPage/images/skrak.png" alt="Image" class="img-fluid rounded mb-5 w-75 rounded-circle">
-                    <h3>Tommy Škrak</h3>
-                    <p class="position text-muted">Backend developer</p>
-                    <p class="mb-4">2. godina stručnog studija računarstva,smjer programsko inženjerstvo, backend developer</p>
-                    <ul class="ul-social-circle">
-                        <li><a href="https://www.facebook.com/tommy.skrak.7"><span class="icon-facebook"></span></a></li>
-
-                        <li><a href="https://github.com/karikiram"><span class="icon-github"></span></a></li>
-                        <li><a href="https://www.instagram.com/tommy_skrak"><span class="icon-instagram"></span></a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="300">
-                <div class="person">
-                    <img src="~/LandingPage/images/fabo.png" alt="Image" class="img-fluid rounded mb-5 w-75 rounded-circle">
-                    <h3>Fabijan Kasapović</h3>
-                    <p class="position text-muted">Database expert</p>
-                    <p class="mb-4">2. godina stručnog studija računarstva,smjer programsko inženjerstvo, database expert</p>
-                    <ul class="ul-social-circle">
-                        <li><a href="https://www.facebook.com/fabijan.kasapovic"><span class="icon-facebook"></span></a></li>
-
-                        <li><a href="https://github.com/fkasapovic"><span class="icon-github"></span></a></li>
-                        <li><a href="https://www.instagram.com/fabijan.k"><span class="icon-instagram"></span></a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="300">
-                <div class="person">
-                    <img src="~/LandingPage/images/fico.png" alt="Image" class="img-fluid rounded mb-5 w-75 rounded-circle">
-                    <h3>Filip Jurinjak</h3>
-                    <p class="position text-muted">Database expert</p>
-                    <p class="mb-4">2. godina stručnog studija računarstva,smjer programsko inženjerstvo, database expert</p>
-                    <ul class="ul-social-circle">
-                        <li><a href="https://www.facebook.com/filip.jurinjak.5"><span class="icon-facebook"></span></a></li>
-
-                        <li><a href="https://github.com/fjurinjak"><span class="icon-github"></span></a></li>
-                        <li><a href="https://www.instagram.com/filipjurinjak"><span class="icon-instagram"></span></a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="300">
-                <div class="person">
-                    <img src="~/LandingPage/images/murk.png" alt="Image" class="img-fluid rounded mb-5 w-75 rounded-circle">
-                    <h3>Karlo Murk</h3>
-                    <p class="position text-muted">Frontend developer</p>
-                    <p class="mb-4">2. godina stručnog studija računarstva,smjer programsko inženjerstvo, frontend developer</p>
-                    <ul class="ul-social-circle">
-                        <li><a href="https://www.facebook.com/karlo.murk"><span class="icon-facebook"></span></a></li>
-                        <li><a href="https://github.com/karlomurk"><span class="icon-github"></span></a></li>
-                        <li><a href="#"><span class="icon-instagram"></span></a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="300">
-                <div class="person">
-                    <img src="~/LandingPage/images/marin.png" alt="Image" class="img-fluid rounded mb-5 w-75 rounded-circle">
-                    <h3>Marin Ratković</h3>
-                    <p class="position text-muted">Frontend developer</p>
-                    <p class="mb-4">2. godina stručnog studija računarstva,smjer programsko inženjerstvo, frontend developer</p>
-                    <ul class="ul-social-circle">
-                        <li><a href="https://www.facebook.com/marin.ratkovic.3"><span class="icon-facebook"></span></a></li>
-                        <li><a href="https://github.com/MarinRatkovic"><span class="icon-github"></span></a></li>
-                        <li><a href="https://www.instagram.com/ratkovic_marin"><span class="icon-instagram"></span></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<div class="site-section border-bottom">
-    <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-7 text-center border-primary">
-                <h2 class="font-weight-light text-primary">Preporuke</h2>
-            </div>
-        </div>
-        <div class="slide-one-item home-slider owl-carousel">
-            <div>
-                <div class="testimonial">
-                    <figure class="mb-4">
-                        <img src="~/LandingPage/images/Canzar.png" alt="Image" class="img-fluid mb-3">
-
-                    </figure>
-                    <blockquote>
-                        <p>&ldquo;Bomba aplikacija, volio bi da sam u njihovom timu!&rdquo;</p>
-                        <p class="author"> &mdash; Ivan Čanžar</p>
-                    </blockquote>
-                </div>
-            </div>
-            <div>
-                <div class="testimonial">
-                    <figure class="mb-4">
-                        <img src="~/LandingPage/images/Klaric.png" alt="Image" class="img-fluid mb-3">
-
-                    </figure>
-                    <blockquote>
-                        <p>&ldquo;Često sam bio prisutan na teambuildinzima od autora, kakav tim... aplikacija je jako dobra btw.&rdquo;</p>
-                        <p class="author"> &mdash; David Klaric</p>
-                    </blockquote>
-                </div>
-            </div>
-            <div>
-                <div class="testimonial">
-                    <figure class="mb-4">
-                        <img src="~/LandingPage/images/paul-mccartney.jpg" alt="Image" class="img-fluid mb-3">
-                    </figure>
-                    <blockquote>
-                        <p>&ldquo;Nadam se da ću i ja naći neku gažu preko aplikacije. Za sad mi ide jako dobro.&rdquo;</p>
-                        <p class="author"> &mdash; Paul McCartney</p>
-                    </blockquote>
-                </div>
-            </div>
-            
-        </div>
-    </div>
-</div>
-
-<div class="site-section bg-light" id="section-contact">
-    <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-7 text-center border-primary">
-                <h2 class="font-weight-light text-primary">Kontaktiraj nas</h2>
-                <p class="color-black-opacity-5">Prati dnevne novosti &amp; Updateove</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-7 mb-5">
-
-                <form action="#" class="p-5 bg-white">
-
-                    <div class="row form-group">
-                        <div class="col-md-6 mb-3 mb-md-0">
-                            <label class="text-black" for="fname">Ime</label>
-                            <input type="text" id="fname" class="form-control">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="text-black" for="lname">Prezime</label>
-                            <input type="text" id="lname" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row form-group">
-
-                        <div class="col-md-12">
-                            <label class="text-black" for="email">Email</label>
-                            <input type="email" id="email" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row form-group">
-
-                        <div class="col-md-12">
-                            <label class="text-black" for="subject">Tema</label>
-                            <input type="text" id="subject" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <label class="text-black" for="message">Poruka</label>
-                            <textarea name="message" id="message" cols="30" rows="7" class="form-control"></textarea>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <input type="submit" value="Pošalji poruku" class="btn btn-primary py-2 px-4 text-white">
-                        </div>
-                    </div>
-
-                </form>
-            </div>
-            <div class="col-md-5">
-
-                <div class="p-4 mb-3 bg-white">
-                    <p class="mb-0 font-weight-bold">Adresa</p>
-                    <p class="mb-4">
-                        BANA JOSIPA JELAČIĆA 22a, 40 000 Čakovec
-                    </p>
-                    <p class="mb-0 font-weight-bold">Telefon</p>
-                    <p class="mb-4"><a href="#">+385 99 3791 050</a></p>
-                    <p class="mb-0 font-weight-bold">Email Address</p>
-                    <p class="mb-0"><a href="#">info@bandaid.com</a></p>
-                </div>
-
-
-            </div>
         </div>
     </div>
 </div>

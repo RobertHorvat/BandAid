@@ -115,6 +115,9 @@ namespace BandAid.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+                entity.Property(e => e.PhoneNumber)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.PassHash).IsRequired();
 
