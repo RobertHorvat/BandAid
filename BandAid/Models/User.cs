@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace BandAid.Models
 {
@@ -21,7 +23,7 @@ namespace BandAid.Models
         public string Email { get; set; }
 
         [Display(Name = "Ime")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Ime je obavezno")]
+        [Required(ErrorMessage = "Ime je obavezno")]
         public string Name { get; set; }
 
         [Display(Name = "Kontakt broj")]
@@ -52,8 +54,14 @@ namespace BandAid.Models
         public bool IsEmailVerified { get; set; }
         public Guid ActivationCode { get; set; }
 
+        [JsonIgnore]
+        [IgnoreDataMember]
         public UserRole Role { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
         public ICollection<Event> Event { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
         public ICollection<Review> Review { get; set; }
     }
 }

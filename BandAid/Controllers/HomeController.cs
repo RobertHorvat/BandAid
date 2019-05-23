@@ -16,12 +16,45 @@ namespace BandAid.Controllers
     {
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetObjectFromJson<User>("user") != null)
+            {
+                int role = HttpContext.Session.GetObjectFromJson<User>("user").RoleId;
+                switch (role)
+                {
+                    case 1:
+                        return RedirectToAction("Index", "Admin");
+
+                    case 2:
+                        return RedirectToAction("Index", "Izvodac");
+
+                    case 3:
+                        return RedirectToAction("Index", "Organizator");
+
+                }
+
+            }
             return View();
         }
 
         public IActionResult About()
         {
-           
+            if (HttpContext.Session.GetObjectFromJson<User>("user") != null)
+            {
+                int role = HttpContext.Session.GetObjectFromJson<User>("user").RoleId;
+                switch (role)
+                {
+                    case 1:
+                        return RedirectToAction("Index", "Admin");
+
+                    case 2:
+                        return RedirectToAction("Index", "Izvodac");
+
+                    case 3:
+                        return RedirectToAction("Index", "Organizator");
+
+                }
+
+            }
 
             return View();
         }
@@ -29,7 +62,23 @@ namespace BandAid.Controllers
         [HttpGet]
         public IActionResult Contact()
         {
-            
+            if (HttpContext.Session.GetObjectFromJson<User>("user") != null)
+            {
+                int role = HttpContext.Session.GetObjectFromJson<User>("user").RoleId;
+                switch (role)
+                {
+                    case 1:
+                        return RedirectToAction("Index", "Admin");
+
+                    case 2:
+                        return RedirectToAction("Index", "Izvodac");
+
+                    case 3:
+                        return RedirectToAction("Index", "Organizator");
+
+                }
+
+            }
 
             return View(new ContactUser());
         }
@@ -89,10 +138,7 @@ namespace BandAid.Controllers
 
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+       
 
        
 

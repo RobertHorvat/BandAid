@@ -15,7 +15,7 @@ namespace BandAid.Controllers
     {
         static masterContext _database = new masterContext();
         List<UserRole> _roles = _database.UserRole
-            .Where(it => it.Name != "Admin")
+            //.Where(it => it.Name != "Admin")
             .ToList();
 
 
@@ -23,7 +23,24 @@ namespace BandAid.Controllers
         [HttpGet]
         public IActionResult Registration()
         {
-            
+            if (HttpContext.Session.GetObjectFromJson<User>("user") != null)
+            {
+                int role = HttpContext.Session.GetObjectFromJson<User>("user").RoleId;
+                switch (role)
+                {
+                    case 1:
+                        return RedirectToAction("Index", "Admin");
+
+                    case 2:
+                        return RedirectToAction("Index", "Izvodac");
+
+                    case 3:
+                        return RedirectToAction("Index", "Organizator");
+
+                }
+
+            }
+
             ViewBag.Roles = new SelectList(_roles, "RoleId", "Name");
             return View(new User());
         }
@@ -38,9 +55,9 @@ namespace BandAid.Controllers
             ViewBag.Roles = new SelectList(_roles, "RoleId", "Name");
 
             User RegUser = user;
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                if(EmailExist(user.Email))
+                if (EmailExist(user.Email))
                 {
                     ModelState.AddModelError("Email", "Email u upotrebi");
                     return View();
@@ -53,8 +70,15 @@ namespace BandAid.Controllers
                     RegUser.PassHash = Enkripcija.Hash(user.PassHash);
                     RegUser.Email = user.Email;
 
+                    if (!_database.User.Any())
+                    {
+                        RegUser.UserId = 1;
+                    }
+                    else
+                    {
+                        RegUser.UserId = _database.User.Last().UserId + 1;
+                    }
 
-                    RegUser.UserId = _database.User.Last().UserId + 1;
 
                     RegUser.Role = _role;
                     RegUser.RoleId = _role.RoleId;
@@ -73,7 +97,7 @@ namespace BandAid.Controllers
                     _status = true;
                     ViewBag.Message = _message;
                     ViewBag.Status = _status;
-                    return RedirectToAction("Registration");
+                    return RedirectToAction("Login");
                 }
                 catch (Exception)
                 {
@@ -83,10 +107,10 @@ namespace BandAid.Controllers
             }
             else
             {
-                
+
                 return View();
             }
-           
+
 
         }
 
@@ -106,17 +130,86 @@ namespace BandAid.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return View(new User());
+            if (HttpContext.Session.GetObjectFromJson<User>("user") != null)
+            {
+                int role = HttpContext.Session.GetObjectFromJson<User>("user").RoleId;
+                switch (role)
+                {
+                    case 1:
+                        return RedirectToAction("Index", "Admin");
+                        
+                    case 2:
+                        return RedirectToAction("Index", "Izvodac");
+
+                    case 3:
+                        return RedirectToAction("Index", "Organizator");
+                    
+                }
+                
+            }
+            return View(new LogUser());
         }
 
         //Login POST action
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(User user)
+        public IActionResult Login([Bind("Email,PassHash")]LogUser user)
         {
-            return View();
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            else
+            {
+
+                if (!EmailExist(user.Email))
+                {
+                    ModelState.AddModelError("Email", "Nepostojeći email");
+                    return View();
+                }
+                else
+                {
+                    User logUser = _database.User.First(it => it.Email == user.Email);
+
+                    if (Enkripcija.Hash(user.PassHash) != logUser.PassHash)
+                    {
+                        ModelState.AddModelError("PassHash", "Kriva zaporka");
+                        return View();
+                    }
+                    else
+                    {
+                        if (logUser.Role.Name == "Izvodac")
+                        {
+                            //TODO:begin session as izvodaxc and redirect to izvodac controller
+                            HttpContext.Session.SetObjectAsJson("user", logUser);
+                            return RedirectToAction("Index", "Izvodac");
+                        }
+                        else if (logUser.Role.Name == "Organizator")
+                        {
+                            //TODO:begin session as Organizator and redirect to organizator controller
+                            HttpContext.Session.SetObjectAsJson("user", logUser);
+                            return RedirectToAction("Index", "Organizator");
+                        }
+                        else if (logUser.Role.Name == "Admin")
+                        {
+
+                            //TODO:begin session as admin and redirect to admin controller
+                            HttpContext.Session.SetObjectAsJson("user", logUser);
+                            return RedirectToAction("Index","Admin");
+
+
+                        }
+                    }
+                    return View();
+                }
+            }
         }
         //TODO
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("user");
+            return RedirectToAction("Index", "Home");
+        }
 
         //Logout
     }

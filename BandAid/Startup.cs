@@ -34,10 +34,12 @@ namespace BandAid
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
             //services.AddDbContext<masterContext>(options =>
-            //options.UseSqlServer(Configuration.GetConnectionString("Database")));
+            //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                             .AddJsonOptions(it => it.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,9 +55,11 @@ namespace BandAid
                 app.UseHsts();
             }
 
+           
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {
